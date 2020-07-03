@@ -1,3 +1,4 @@
+const Joi = require('@hapi/joi'); //Returns class so 'J' in caps
 const express = require('express');
 
 const app = express();
@@ -38,6 +39,23 @@ app.get('/api/courses/:id', (req, res) => {
 
 // //Create a new course
 app.post('/api/courses', (req, res) => {
+
+    const schema = Joi.object({
+        name: Joi.string().min(3).required()
+    });
+
+    const result = schema.validate(req.body);
+    // res.status(400).send(result.error.details[0].message);
+    // console.log(result);
+
+    // if(!req.body.name || req.body.name.length < 3){
+    //     //400 - Bad Request
+    //     return res.status(400).send('Course Name is not Valid');
+    // }
+    if(result.error){
+        //400 - Bad Request
+        return res.status(400).send(result.error.details[0].message);
+    }
     const course = {
         id: courses.length + 1,
         name: req.body.name

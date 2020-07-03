@@ -2,6 +2,9 @@ const express = require('express');
 
 const app = express();
 
+//Returns a middleware - Body Parsing
+app.use(express.json());
+
 const courses = [
     {
         id: 1, name: 'Course1'
@@ -33,9 +36,15 @@ app.get('/api/courses/:id', (req, res) => {
 
 });
 
-//Create a new course
+// //Create a new course
 app.post('/api/courses', (req, res) => {
-
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name
+    };
+    console.log(course);
+    courses.push(course);
+    res.send(course); 
 });
 
 
@@ -45,7 +54,7 @@ app.post('/api/courses', (req, res) => {
 // });
 
 //PORT 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3030;
 
 app.listen(port, () => {
     // console.log("Listening on port " + port.toString() +"...");
